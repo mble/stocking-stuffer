@@ -5,7 +5,7 @@ import (
 	"crypto/sha256"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 )
 
@@ -13,8 +13,8 @@ import (
 func UserID(h http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		var fields interface{}
-		body, _ := ioutil.ReadAll(r.Body)
-		r.Body = ioutil.NopCloser(bytes.NewBuffer(body))
+		body, _ := io.ReadAll(r.Body)
+		r.Body = io.NopCloser(bytes.NewBuffer(body))
 		err := json.Unmarshal(body, &fields)
 		if err == nil {
 			username := fields.(map[string]interface{})["username"]
